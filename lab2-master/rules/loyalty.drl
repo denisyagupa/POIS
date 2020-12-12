@@ -1,0 +1,20 @@
+import ru.mirea.pois.data.Customer
+import ru.mirea.pois.data.Model
+
+global Model model;
+
+rule "loyalty system"
+    when
+        customer: Customer();
+    then
+        double cost = calcCostDiscount(customer);
+        model.setCustomer(customer);
+        model.printResult(cost);
+        model.setCost(cost);
+end
+function double calcCostDiscount(Customer customer) {
+    double coefYears = 0.05;
+    double coefAllCost = 0.00001;
+    double costDiscount = customer.getCost() * (1 - (customer.getNumYears() * coefYears + customer.getAllCost() * coefAllCost));
+    return costDiscount;
+}
